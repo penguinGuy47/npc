@@ -9,9 +9,16 @@ public class findVCover
 
     public static void main(String[] args) throws IOException
     {
-        File rfile = new File("graphs.txt");
+        String readFile = "graphs.txt";
+        String outputFile = "graphsOutput.txt";
+        vCover(readFile, outputFile);
+    }
+
+    public static void vCover(String readFile, String outputFile) throws IOException
+    {
+        File rfile = new File(readFile);
         Scanner sc = new Scanner(rfile);
-        FileWriter wfile = new FileWriter("graphsOutput.txt");
+        FileWriter wfile = new FileWriter(outputFile);
         while (sc.hasNextLine())
         {
             // get the number of matrix length
