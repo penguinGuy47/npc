@@ -33,9 +33,11 @@ public class findVCover
             for (int i = 0; i < max; i++)  
             {
                 String matrix = "";
+
                 // check line in the matrix
                 data = sc.nextLine();
                 String[] newSet = data.split(" ");
+
                 // check if numbers are 1's or 0's
                 for (int j = 0; j < max; j++)
                 {
@@ -55,7 +57,7 @@ public class findVCover
     {
         File rfile = new File(readFile);
         Scanner sc = new Scanner(rfile);
-        //FileWriter wfile = new FileWriter(outputFile);
+
         while (sc.hasNextLine())
         {
             // get the number of matrix length
@@ -64,7 +66,7 @@ public class findVCover
             int max = Integer.parseInt(data);
             int[][] tempM = new int[max][max];
 
-            //start of first matrix
+            //start of matrix
             for (int i = 0; i < tempM.length; i++)  
             {
                 // check line in the matrix
@@ -80,6 +82,5 @@ public class findVCover
             System.out.println("Max clique for matrix of size " + max + ": " + maxClique);
         }
         sc.close();
-        //wfile.close();
     }
 }
