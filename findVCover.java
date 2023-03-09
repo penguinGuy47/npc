@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class findVCover 
@@ -11,7 +11,10 @@ public class findVCover
     {
         String readFile = "graphs.txt";
         String outputFile = "graphsOutput.txt";
+
         vCover(readFile, outputFile);
+        
+        cliqueInput(outputFile);
     }
 
     public static void vCover(String readFile, String outputFile) throws IOException
@@ -46,5 +49,37 @@ public class findVCover
         }
         sc.close();
         wfile.close();
+    }
+
+    public static void cliqueInput(String readFile) throws IOException
+    {
+        File rfile = new File(readFile);
+        Scanner sc = new Scanner(rfile);
+        //FileWriter wfile = new FileWriter(outputFile);
+        while (sc.hasNextLine())
+        {
+            // get the number of matrix length
+            String data = sc.nextLine();
+
+            int max = Integer.parseInt(data);
+            int[][] tempM = new int[max][max];
+
+            //start of first matrix
+            for (int i = 0; i < tempM.length; i++)  
+            {
+                // check line in the matrix
+                data = sc.nextLine();
+                String[] newSet = data.split(" ");
+
+                for (int j = 0; j < tempM[i].length; j++)
+                {
+                   tempM[i][j] = Integer.parseInt(newSet[j]);
+                }
+            }
+            List<Integer> maxClique = findClique2.findMaxClique(tempM);
+            System.out.println("Max clique for matrix of size " + max + ": " + maxClique);
+        }
+        sc.close();
+        //wfile.close();
     }
 }

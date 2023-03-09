@@ -37,11 +37,12 @@ public class findClique2 {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         // int[][] graph = {{0, 1, 1, 0},
         //                  {1, 0, 1, 1},
         //                  {1, 1, 0, 1},
         //                  {0, 1, 1, 0}};
+
 
         int[][] graph = {
             {0, 1, 1, 1, 1},
