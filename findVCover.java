@@ -78,7 +78,7 @@ public class findVCover
                    tempM[i][j] = Integer.parseInt(newSet[j]);
                 }
             }
-            List<Integer> maxClique = findClique2.findMaxClique(tempM);
+            List<Integer> maxClique = findClique.findMaxClique(tempM);
             System.out.println("Max clique for matrix of size " + max + ": " + maxClique);
         }
         sc.close();

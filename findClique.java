@@ -1,69 +1,64 @@
 import java.util.*;
 
 public class findClique {
-    
-    public static Set<Integer> findMaxClique(int[][] graph) {
-        Set<Integer> maxClique = new HashSet<>();
-        Set<Integer> potentialClique = new HashSet<>();
-        Set<Integer> remainingVertices = new HashSet<>();
-        for (int i = 0; i < graph.length; i++) {
-            remainingVertices.add(i);
-        }
-        bronKerbosch(maxClique, potentialClique, remainingVertices, graph);
+
+    public static List<Integer> findMaxClique(int[][] complementGraph) {
+        int n = complementGraph.length;
+        Set<Integer> candidates = new HashSet<>();
+        Set<Integer> explored = new HashSet<>();
+        List<Integer> clique = new ArrayList<>();
+        List<Integer> maxClique = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+            candidates.add(i);
+        bronKerbosch(complementGraph, candidates, explored, clique, maxClique);
         return maxClique;
     }
     
-    private static void bronKerbosch(Set<Integer> maxClique, Set<Integer> potentialClique, Set<Integer> remainingVertices, int[][] graph) {
-        if (remainingVertices.isEmpty() && potentialClique.size() > maxClique.size()) {
-            maxClique.clear();
-            maxClique.addAll(potentialClique);
-        } else {
-            Set<Integer> candidates = new HashSet<>(remainingVertices);
-            for (int v : potentialClique) {
-                // Retain only the candidates that are connected to every vertex in potentialClique
-                candidates.retainAll(getNeighbors(v, graph));
+    private static void bronKerbosch(int[][] complementGraph, Set<Integer> candidates, Set<Integer> explored, List<Integer> clique, List<Integer> maxClique) {
+        if (candidates.isEmpty() && explored.isEmpty()) 
+        {
+            if (clique.size() > maxClique.size()) 
+            {
+                maxClique.clear();
+                maxClique.addAll(clique);
             }
-            for (int v : candidates) {
-                Set<Integer> newPotentialClique = new HashSet<>(potentialClique);
-                newPotentialClique.add(v);
-                Set<Integer> newRemainingVertices = new HashSet<>(remainingVertices);
-                newRemainingVertices.retainAll(getNeighbors(v, graph));
-                bronKerbosch(maxClique, newPotentialClique, newRemainingVertices, graph);
-                remainingVertices.remove(v);
-                potentialClique.add(v);
+        } 
+        else 
+        {
+            Set<Integer> candidatesCopy = new HashSet<>(candidates);
+            for (int u : candidatesCopy) 
+            {
+                List<Integer> newClique = new ArrayList<>(clique);
+                newClique.add(u);
+                Set<Integer> newCandidates = new HashSet<>();
+                Set<Integer> newSet = new HashSet<>();
+                for (int v : candidates) 
+                {
+                    if (complementGraph[u][v] == 0 && u != v) // vertex is not adjacent to u
+                        newCandidates.add(v);
+                }
+                for (int v : explored) {
+                    if (complementGraph[u][v] == 0 && u != v) // vertex is not adjacent to u
+                        newSet.add(v);
+                }
+                bronKerbosch(complementGraph, newCandidates, newSet, newClique, maxClique);
+                candidates.remove(u);
+                explored.add(u);
             }
         }
     }
     
-    private static Set<Integer> getNeighbors(int v, int[][] graph) {
-        Set<Integer> neighbors = new HashSet<>();
-        for (int i = 0; i < graph.length; i++) {
-            if (graph[v][i] == 1) {
-                neighbors.add(i);
-            }
-        }
-        return neighbors;
-    }
-    
-    public static void main(String[] args) {
-        // int[][] graph = {
-        //     {0, 1, 1, 0, 0, 0},
-        //     {1, 0, 1, 1, 0, 0},
-        //     {1, 1, 0, 1, 1, 0},
-        //     {0, 1, 1, 0, 1, 1},
-        //     {0, 0, 1, 1, 0, 1},
-        //     {0, 0, 0, 1, 1, 0}
-        // };
+
+    public static void main(String[] args){
 
         int[][] graph = {
-            {0, 1, 1, 1, 1},
-            {1, 0, 0, 1, 1},
-            {1, 0, 0, 0, 1},
-            {1, 1, 0, 0, 1},
-            {1, 1, 1, 1, 0},
+            {0, 1, 1, 0, 0},
+            {1, 0, 1, 0, 0},
+            {1, 1, 0, 1, 0},
+            {0, 0, 1, 0, 1},
+            {0, 0, 0, 1, 0}
         };
-
-        Set<Integer> maxClique = findMaxClique(graph);
-        System.out.println("Maximum vertex clique: " + maxClique);
+        List<Integer> maxClique = findMaxClique(graph);
+        System.out.println("Max clique: " + maxClique);
     }
 }
