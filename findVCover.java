@@ -9,7 +9,7 @@ public class findVCover
 
     public static void main(String[] args) throws IOException
     {
-        String readFile = "graphs.txt";
+        String readFile = args[0];
         String outputFile = "graphsOutput.txt";
 
         vCover(readFile, outputFile);
@@ -55,8 +55,11 @@ public class findVCover
 
     public static void cliqueInput(String readFile) throws IOException
     {
+        System.out.println(String.format("* A Minimum Vertex Cover of every graph in %s: (reduced to K-Clique) *", readFile));
+        System.out.println("   (|V|) (ms used) Vertex Cover");
         File rfile = new File(readFile);
         Scanner sc = new Scanner(rfile);
+        int graphCount = 1;
 
         while (sc.hasNextLine())
         {
@@ -78,8 +81,13 @@ public class findVCover
                    tempM[i][j] = Integer.parseInt(newSet[j]);
                 }
             }
+            long startTime = System.currentTimeMillis();
             List<Integer> maxClique = findClique.findMaxClique(tempM);
-            System.out.println("Max clique for matrix of size " + max + ": " + maxClique);
+            long endTime = System.currentTimeMillis();
+
+            String stringOutput = String.format("G%d (%d) (ms=%d) ", graphCount, max, endTime - startTime);
+            System.out.println("" + stringOutput + maxClique);
+            graphCount += 1;
         }
         sc.close();
     }

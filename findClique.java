@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class findClique {
@@ -48,17 +50,47 @@ public class findClique {
         }
     }
     
+    public static void cliqueInput(String readFile) throws IOException
+    {
+        System.out.println(String.format("* A Maximum Vextex Clique of every graph in %s *", readFile));
+        System.out.println("   (|V|, |E|) (size, ms used) Vertex Clique");
+        File rfile = new File(readFile);
+        Scanner sc = new Scanner(rfile);
+        int graphCount = 1;
 
-    public static void main(String[] args){
+        while (sc.hasNextLine())
+        {
+            // get the number of matrix length
+            String data = sc.nextLine();
 
-        int[][] graph = {
-            {0, 1, 1, 0, 0},
-            {1, 0, 1, 0, 0},
-            {1, 1, 0, 1, 0},
-            {0, 0, 1, 0, 1},
-            {0, 0, 0, 1, 0}
-        };
-        List<Integer> maxClique = findMaxClique(graph);
-        System.out.println("Max clique: " + maxClique);
+            int max = Integer.parseInt(data);
+            int[][] tempM = new int[max][max];
+
+            //start of matrix
+            for (int i = 0; i < tempM.length; i++)  
+            {
+                // check line in the matrix
+                data = sc.nextLine();
+                String[] newSet = data.split(" ");
+
+                for (int j = 0; j < tempM[i].length; j++)
+                {
+                   tempM[i][j] = Integer.parseInt(newSet[j]);
+                }
+            }
+            long startTime = System.currentTimeMillis();
+            List<Integer> maxClique = findClique.findMaxClique(tempM);
+            long endTime = System.currentTimeMillis();
+
+            String stringOutput = String.format("G%d (%d) (ms=%d) ", graphCount, max, endTime - startTime);
+            System.out.println("" + stringOutput + maxClique);
+            graphCount += 1;
+        }
+        sc.close();
+    }
+
+    public static void main(String[] args) throws IOException{
+        String readFile = args[0];
+        cliqueInput(readFile);
     }
 }
